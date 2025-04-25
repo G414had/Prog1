@@ -7,7 +7,6 @@ public class Project {
     public static HashMap<String, HashMap<String, Integer>> moveSet = new HashMap<>();
     public static void main(String[] args) {
 
-
         // Creating moves
         HashMap<String, Integer> Tackle = new HashMap<>();
         Tackle.put("Damage", 5);
@@ -49,9 +48,6 @@ public class Project {
         WaterPulse.put("Speed", 47);
         WaterPulse.put("MoveType", 3);
         moveSet.put("WaterPulse", WaterPulse);
-
-        
-        
         
         // Creating ally Pokemon
         AllyPokemon charmander = new AllyPokemon("Charmander", "fire", 37, 8, 2, "Tackle", "QuickAttack", "Ember", "FireFang");
@@ -67,20 +63,10 @@ public class Project {
         Pokemon[] enemies = { totodile, chikorita, cyndaquil };
 
         Game game = new Game(allies, enemies);
-        game.allies = allies;
-        game.enemies = enemies;
-        game.allyIndex = 0;
-        game.enemyIndex = 0;
-        game.currentAlly = allies[0];
-        game.currentEnemy = enemies[0];
         game.startGame();
         
     }
 }
-
-
-
-
 
 // Handles all actual game functions
 class Game {
@@ -101,26 +87,26 @@ class Game {
         2, 4, 3, 1, 2, 3, 4, 1, 2, 4,
         3, 1, 3, 2, 4, 1, 3, 2, 4, 1};
 
-        Game(Pokemon[] allies, Pokemon []enemies){
-            this.allies = allies;
-            this.enemies = enemies;
-            this.allyIndex = 0;
-            this.enemyIndex = 0;
-            this.currentAlly = allies[0];
-            this.currentEnemy = enemies[0];
-        }
-        
-        public Pokemon getCurrentAlly(){
-            return currentAlly;
-        }
+    Game(Pokemon[] allies, Pokemon []enemies){
+        this.allies = allies;
+        this.enemies = enemies;
+        this.allyIndex = 0;
+        this.enemyIndex = 0;
+        this.currentAlly = allies[0];
+        this.currentEnemy = enemies[0];
+    }
     
-        public Pokemon getCurrentEnemy(){
-            return currentEnemy;
-        }
-        
+    public Pokemon getCurrentAlly(){
+        return currentAlly;
+    }
+
+    public Pokemon getCurrentEnemy(){
+        return currentEnemy;
+    }
+    
+    // Handles the actual process of the game
     public void startGame(){
         skipTurn = false;
-        
         while (true) {
             if (currentAlly.hp <= 0) {
                 skipTurn = false;
@@ -145,14 +131,14 @@ class Game {
                 currentEnemy = enemies[enemyIndex];
                 System.out.println("The enemy sends out " + currentEnemy.name);
             }
+
             fightSequence();
         }
     }
 
     
-
+    // Purely used for the fight sequence
     private void fightSequence(){
-
         // Try catch to validate input - Catches numbers out of bounds and non-integer inputs
         while (true) {
             try {
@@ -211,7 +197,7 @@ class Game {
         enemySpeed = Project.moveSet.get(enemyChoice).get("Speed");
 
         if (allySpeed > enemySpeed) {
-            System.out.println("Ally faster");
+            System.out.println("You were faster");
             System.out.println("Enemy used " + enemyChoice);
             System.out.println("Ally used " + currentAlly.selectedMove);
             allyDamage = currentAlly.fight(currentEnemy,  currentAlly.selectedMove);
@@ -237,9 +223,9 @@ class Game {
             }
 
         } else if (enemySpeed > allySpeed) {
-            System.out.println("Enemy faster");
+            System.out.println("Enemy was faster");
             System.out.println("Enemy used " + enemyChoice);
-            System.out.println("Ally used " + currentAlly.selectedMove);
+            System.out.println("You used " + currentAlly.selectedMove);
             enemyDamage =  currentEnemy.fight( currentAlly, enemyChoice);
             currentAlly.hp -= enemyDamage;
             System.out.println( currentAlly.name + " took " + enemyDamage + " damage!");
@@ -293,7 +279,6 @@ class Game {
 
 }
 
-
 // Parent Pokemon class
 class Pokemon {
     protected String name, type, selectedMove, move1, move2, move3, move4;
@@ -313,7 +298,7 @@ class Pokemon {
         this.move3 = move3;
         this.move4 = move4;
     }
-    
+
     // Empty method used in other classes for damage calculation.
     public int fight(Pokemon target, String selectedMove){
         return 0;
